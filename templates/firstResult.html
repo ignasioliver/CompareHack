@@ -1,0 +1,151 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+   <div class="container">
+      <div class="navbar-header">
+         <a class="navbar-brand" href="/">CompareHack</a>
+         <a class="navbar-text" href="https://github.com/ignasioliver/CompareHack" target="_blank">Github source</a>
+      </div>
+   </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+   <div class = "form-group">
+      <form action="/initialSearch" method="POST">
+         <div class = "row">
+            <div class="col col-md-3">
+               <input type="text" class="form-control" name="product" placeholder="Product"/>
+            </div>
+            <div class="col col-md-3">
+               <input type="text" class="form-control" name="countryDestination" placeholder="Country of destination"/>
+            </div>
+            <div class="col col-md-3">
+               <input type="text" class="form-control" name="countryOrigin" placeholder="Additional country"/>
+            </div>
+            <div class="col col-md-3">
+               <input type = "submit" value = "Search" class="btn btn-primary"/>
+            </div>
+         </div>
+      </form>
+   </div>
+   <div class="card" style="width: 40rem;">
+      <ul class="list-group list-group-flush">
+         <li class="list-group-item">Selected product to search: <strong>{{userInput["product"]}}</strong></li>
+         <li class="list-group-item">Selected country of destination: <strong>{{userInput["countryDestination"]}}</strong></li>
+         <li class="list-group-item">Selected additional country: <strong>{{userInput["countryOrigin"]}}</strong></li>
+      </ul>
+   </div>
+   {% if definingWords[2] %}
+   <h4>Legal advice</h4>
+   <div class="well">
+      <ul class="list-group list-group-flush">
+         <p>Keep in mind that although {{ userInput["product"] }} can be {{ definingWords[0] }}, it can also be understood as {{ definingWords[1] }} or as {{ definingWords[2] }} as well.</p>
+      </ul>
+   </div>
+   {% endif %}
+   <br>
+   <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse" data-target="#legislation">EU legislation</button>
+   <div class="collapse" id="legislation">
+      <div class="card card-body">
+         <div class="well">
+            <ul class="list-group list-group-flush">
+               {% if EUlegislation.items() %}
+               {% for ke, val in EUlegislation.items() %}
+               {% if ke %} <!-- Not all elements of EU legislation have a code! -->
+               <a href="https://trade.ec.europa.eu/tradehelp/myexport#?product={{ ke }}" target="_blank">
+                  <li class="list-group-item">(Code {{ ke }}): {{ val }} </li>
+               </a>
+               {% endif %}
+               {% endfor %}
+               {% else %}
+            <strong>There is no additional legislation</strong>
+            {% endif %}
+            </ul>
+         </div>
+      </div>
+   </div>
+   <br>
+   <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse" data-target="#destination">
+   {{ countryDestination }}
+   </button>
+   <div class="collapse" id="destination">
+      <div class="card card-body">
+         <div class="well">
+            {% if destinationReturnedDict.items() %}
+            {% for k, v in destinationReturnedDict.items() %}
+            <p>
+               <tr>
+                  <th>
+                     <a href="compute/{{k}}" target="_blank"><button class="btn btn-info"  type="button">
+                     {{ k }}
+                     </button></a>
+                     <br>
+                     <div class="card card-body">
+                        <div class="well">
+                           <strong>{{ v }}</strong>
+                           <br><br>
+                        </div>
+                     </div>
+                  </th>
+               </tr>
+            </p>
+            {% endfor %}
+            {% else %}
+            <strong>There is no additional legislation</strong>
+            {% endif %}
+         </div>
+      </div>
+   </div>
+   <br>
+   <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse" data-target="#origin">
+   {{ countryOrigin }}
+   </button>
+   <div class="collapse" id="origin">
+      <div class="card card-body">
+         <div class="well">
+            {% if originReturnedDict.items() %}
+            {% for key, value in originReturnedDict.items() %}
+            <p>
+               <tr>
+                  <th>
+                     <a href="compute/{{ key }}" target="_blank"><button class="btn btn-info"  type="button">
+                     {{ key }}
+                     </button></a>
+                     <br>
+                     <div class="card card-body">
+                        <div class="well">
+                           <strong>{{ value }}</strong>
+                           <br><br>
+                        </div>
+                     </div>
+                  </th>
+               </tr>
+            </p>
+            {% endfor %}
+            {% else %}
+            <strong>There is no additional legislation</strong>
+            {% endif %}
+         </div>
+      </div>
+   </div>
+   <br>
+    <h4>We would love to hear your opinion</h4>
+      <div class="well">
+      <div class = "form-group">
+      <form action="/giveFeedBack" method="POST">
+          <input type="text" name="cDestin" class="form-control" value="{{ countryDestination }}"/>
+          <input type="text"  name="cOrigin" class="form-control" value="{{ countryOrigin }}"/>
+          <input type="text" name="pSel" class="form-control" value="{{ productSelectedUser }}"/>
+          <input type="textarea" class="form-control" name="mainText" rows="3" placeholder="How has been your experience so far?"/>
+          <br>
+          <input type = "submit" value = "Submit" class="btn btn-primary" />
+      </form>
+      </div>
+   </div>
+   {# application content needs to be provided in the app_content block #}
+   {% block app_content %}{% endblock %}
+</div>
+{% endblock %}

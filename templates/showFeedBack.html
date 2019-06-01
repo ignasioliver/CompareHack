@@ -1,0 +1,40 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+   <div class="container">
+      <div class="navbar-header">
+         <a class="navbar-brand" href="/">CompareHack</a>
+         <a class="navbar-text" href="https://github.com/ignasioliver/CompareHack" target="_blank">Github source</a>
+      </div>
+   </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+   <div class="card" style="width: 40rem;">
+      <ul class="list-group list-group-flush">
+         <h4>All reviews: </h4>
+         {% for allt in allTexts %}
+         <li class="list-group-item">Review {{ loop.index }}.-<strong> {{ allt }}</strong></li>
+         {% endfor %}
+         <br>
+         <h4>All products selected: </h4>
+         {% for allP in allPSel %}
+         <li class="list-group-item">Selected product {{ loop.index }}.-<strong>{{ allP }}</strong></li>
+         {% endfor %}
+         <br>
+         <h4>All Destinations: </h4>
+         {% for allc in allcDestin %}
+         <li class="list-group-item">Selected destination {{ loop.index }}.-<strong>{{ allc }}</strong></li>
+         {% endfor %}
+         <br>
+         <h4>All Origins: </h4>
+         {% for allO in allcOrigin %}
+         <li class="list-group-item">Selected origin {{ loop.index }}.-<strong>{{ allO }}</strong></li>
+         {% endfor %}
+      </ul>
+   </div>
+</div>
+{% endblock %}

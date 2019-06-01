@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block body %}
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">CompareHack</a>
+            <a class="navbar-text" href="https://github.com/ignasioliver/CompareHack" target="_blank">Github source</a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+<div class="container">
+   <div class = "form-group">
+      <form action="/initialSearch" method="POST">
+         <div class = "row">
+            <div class="col col-md-3">
+               <input type="text" class="form-control" name="product" placeholder="Product">
+            </div>
+            <div class="col col-md-3">
+               <input type="text" class="form-control" name="countryDestination" placeholder="Country of destination">
+            </div>
+            <div class="col col-md-3">
+               <input type="text" class="form-control" name="countryOrigin" placeholder="Additional country">
+            </div>
+            <div class="col col-md-3">
+               <input type="submit" value="Search" class="btn btn-primary"/>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+{% endblock %}
